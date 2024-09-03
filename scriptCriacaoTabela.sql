@@ -15,6 +15,18 @@ CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
 USE `mydb` ;
 
 -- -----------------------------------------------------
+-- Table `mydb`.`Academico`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Academico` (
+  `instituicao` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NOT NULL,
+  `nome` VARCHAR(45) NOT NULL,
+  `pesquisa_Atividade_atvID` INT NOT NULL,
+  PRIMARY KEY (`email`, `pesquisa_Atividade_atvID`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `mydb`.`Atividade`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Atividade` (
@@ -22,43 +34,10 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Atividade` (
   `instituicao` VARCHAR(45) NOT NULL,
   `disciplina` VARCHAR(45) NULL,
   `numQuest` INT NULL,
-  PRIMARY KEY (`atvID`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `mydb`.`Academico`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Academico` (
-  `instituicao` VARCHAR(45) NOT NULL,
-  `email` VARCHAR(45) NOT NULL,
-  `nome` VARCHAR(45) NOT NULL,
-  `Atividade_atvID` INT NULL,
-  PRIMARY KEY (`email`),
-  INDEX `fk_Academico_Atividade1_idx` (`Atividade_atvID` ASC) VISIBLE,
-  CONSTRAINT `fk_Academico_Atividade1`
-    FOREIGN KEY (`Atividade_atvID`)
-    REFERENCES `mydb`.`Atividade` (`atvID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `mydb`.`pesquisa`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`pesquisa` (
-  `Atividade_atvID` INT NOT NULL,
   `Academico_email` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`Academico_email`, `Atividade_atvID`),
-  INDEX `fk_Atividade_has_Academico_Academico1_idx` (`Academico_email` ASC) VISIBLE,
-  INDEX `fk_Atividade_has_Academico_Atividade1_idx` (`Atividade_atvID` ASC) VISIBLE,
-  CONSTRAINT `fk_Atividade_has_Academico_Atividade1`
-    FOREIGN KEY (`Atividade_atvID`)
-    REFERENCES `mydb`.`Atividade` (`atvID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Atividade_has_Academico_Academico1`
+  PRIMARY KEY (`atvID`, `Academico_email`),
+  INDEX `fk_Atividade_Academico1_idx` (`Academico_email` ASC) VISIBLE,
+  CONSTRAINT `fk_Atividade_Academico1`
     FOREIGN KEY (`Academico_email`)
     REFERENCES `mydb`.`Academico` (`email`)
     ON DELETE NO ACTION
@@ -120,6 +99,28 @@ CREATE TABLE IF NOT EXISTS `mydb`.`aluno` (
   `Academico_email` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`Academico_email`),
   CONSTRAINT `fk_aluno_Academico1`
+    FOREIGN KEY (`Academico_email`)
+    REFERENCES `mydb`.`Academico` (`email`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`pesquisa`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`pesquisa` (
+  `Atividade_atvID` INT NOT NULL,
+  `Academico_email` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`Atividade_atvID`, `Academico_email`),
+  INDEX `fk_Atividade_has_Academico_Academico1_idx` (`Academico_email` ASC) VISIBLE,
+  INDEX `fk_Atividade_has_Academico_Atividade1_idx` (`Atividade_atvID` ASC) VISIBLE,
+  CONSTRAINT `fk_Atividade_has_Academico_Atividade1`
+    FOREIGN KEY (`Atividade_atvID`)
+    REFERENCES `mydb`.`Atividade` (`atvID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Atividade_has_Academico_Academico1`
     FOREIGN KEY (`Academico_email`)
     REFERENCES `mydb`.`Academico` (`email`)
     ON DELETE NO ACTION
