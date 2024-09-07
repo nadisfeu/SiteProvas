@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS public.atividade
     institucao "char"[],
     disciplica "char"[],
     "numQuest" integer,
+    "caminhoArquivo" "char"[],
     PRIMARY KEY ("atvID")
 );
 
@@ -24,26 +25,30 @@ CREATE TABLE IF NOT EXISTS public.academico
 CREATE TABLE IF NOT EXISTS public.lista
 (
     gabarito boolean DEFAULT false,
-    "atvID" integer
+    "atvID" integer NOT NULL,
+    PRIMARY KEY ("atvID")
 );
 
 CREATE TABLE IF NOT EXISTS public.prova
 (
     tipo integer DEFAULT 1,
-    "atvdID" integer
+    "atvdID" integer NOT NULL,
+    PRIMARY KEY ("atvdID")
 );
 
 CREATE UNLOGGED TABLE IF NOT EXISTS public.professor
 (
     dep "char"[],
     sala "char"[],
-    email_academico "char"[]
+    email_academico "char"[] NOT NULL,
+    PRIMARY KEY (email_academico)
 );
 
 CREATE TABLE IF NOT EXISTS public.aluno
 (
     curso "char"[],
-    email_academico "char"[]
+    email_academico "char"[] NOT NULL,
+    PRIMARY KEY (email_academico)
 );
 
 CREATE TABLE IF NOT EXISTS public.pesquisa
@@ -53,8 +58,8 @@ CREATE TABLE IF NOT EXISTS public.pesquisa
 );
 
 ALTER TABLE IF EXISTS public.atividade
-    ADD FOREIGN KEY (academico_email)
-    REFERENCES public.academico (email) MATCH SIMPLE
+    ADD CONSTRAINT "ENVIA" FOREIGN KEY (academico_email)
+    REFERENCES public.academico (email) MATCH FULL
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
