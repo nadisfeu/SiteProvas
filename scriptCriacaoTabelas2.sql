@@ -32,7 +32,7 @@ CREATE TABLE lista
 
 insert into lista values (1,'bruno@ufop', 'ufop','BD',10,'drive.com',true);
 insert into lista values (2,'ryan@ufop', 'ufop','AEDS 1',5,'drive.com',false);
-insert into lista values (2,'fernando@ufop', 'ufop','Programacao 1',6,'drive.com',false);
+insert into lista values (3,'fernando@ufop', 'ufop','Programacao 1',6,'drive.com',false);
 insert into lista values (4,'paulo@ufop', 'ufop','Redes 1',9,'drive.com',true);
 
 DROP TABLE IF EXISTS prova CASCADE;
@@ -42,6 +42,11 @@ CREATE TABLE prova
     tipo integer DEFAULT 1,
 	PRIMARY KEY(atvID)
 )INHERITS (atividade);
+
+insert into prova values (1,'bruno@ufop', 'ufop','BD',10,'drive.com',1);
+insert into prova values (2,'ryan@ufop', 'ufop','AEDS 1',5,'drive.com',2);
+insert into prova values (3,'fernando@ufop', 'ufop','Programacao 1',6,'drive.com',3);
+insert into prova values (4,'paulo@ufop', 'ufop','Redes 1',9,'drive.com',9);
 
 DROP TABLE IF EXISTS professor CASCADE;
 
@@ -71,4 +76,4 @@ CREATE TABLE pesquisa
 	FOREIGN KEY (email_academico) REFERENCES academico (email)
 );
 
-select * from lista;
+select * from prova;
