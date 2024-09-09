@@ -57,6 +57,11 @@ CREATE UNLOGGED TABLE professor
 	PRIMARY KEY(email)
 )INHERITS (academico);
 
+insert into professor values ('alexandre@ufop', 'Alexandre','UFOP','DECSI','A301');
+insert into professor values ('eduardo@ufop', 'Eduardo','UFOP','DECSI','A303');
+insert into professor values ('filipe@ufop', 'Filipe','UFOP','DECSI','A302');
+insert into professor values ('juvenil@ufop', 'Juvenil','UFOP','DECEA','A304');
+
 DROP TABLE IF EXISTS aluno CASCADE;
 
 CREATE TABLE aluno
@@ -64,6 +69,11 @@ CREATE TABLE aluno
     curso CHAR(22),
 	PRIMARY KEY(email)
 )INHERITS (academico);
+
+insert into professor values ('ryan@ufop', 'Ryan','UFOP','Computacao');
+insert into professor values ('fernando@ufop', 'Fernando','UFOP','Computacao');
+insert into professor values ('paulo@ufop', 'Paulo','UFOP','Computacao');
+insert into professor values ('junin@ufop', 'Junior','UFOP','Producao');
 
 DROP TABLE IF EXISTS pesquisa CASCADE;
 
@@ -75,5 +85,8 @@ CREATE TABLE pesquisa
 	FOREIGN KEY (atvID_atividade) REFERENCES atividade (atvID),
 	FOREIGN KEY (email_academico) REFERENCES academico (email)
 );
+
+insert into pesquisa values (2,'bruno@ufop');
+insert into pesquisa values (3,'ryan@ufop');
 
 select * from prova;
