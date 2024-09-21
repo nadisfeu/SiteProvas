@@ -15,19 +15,9 @@ def verficar_email(email):
 
 
 #funcoes de insercao
-def inserir_academico(email, nome, instituicao):
-    insert_scrip = 'INSERT INTO ACADEMICO (email, nome, instituicao) VALUES (%s, %s, %s)'
-    insert_values = (email, nome, instituicao)
-    cur.execute(insert_scrip, insert_values)
-
-def inserir_aluno(email, nome, instituicao, curso):
-    insert_scrip = 'INSERT INTO ALUNO (email, nome, instituicao, curso) VALUES (%s, %s, %s, %s)'
-    insert_values = (email, nome, instituicao, curso)
-    cur.execute(insert_scrip, insert_values)
-
-def inserir_professor(email, nome, instituicao, departamento, sala):
-    insert_scrip = 'INSERT INTO PROFESSOR (email, nome, instituicao, dep, sala) VALUES (%s, %s, %s, %s, %s)'
-    insert_values = (email, nome, instituicao, departamento, sala)
+def _inserir_academico_(email, nome, instituicao, tipo):
+    insert_scrip = 'INSERT INTO ACADEMICO (email, nome, instituicao, tipo) VALUES (%s, %s, %s, %s)'
+    insert_values = (email, nome, instituicao,tipo)
     cur.execute(insert_scrip, insert_values)
 
 #CORRIGIR ERROS DE GRAMATICA EM ATIVIDADE NO BANCO DE DADOS/SCRIPT!!!!!!!
