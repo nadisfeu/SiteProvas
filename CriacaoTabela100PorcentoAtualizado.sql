@@ -2,26 +2,29 @@
 -- Please log an issue at https://github.com/pgadmin-org/pgadmin4/issues/new/choose if you find any bugs, including reproduction steps.
 BEGIN;
 
-
+DROP TABLE IF EXISTS atividade CASCADE;
 CREATE TABLE IF NOT EXISTS public.atividade
 (
     "atvID" integer NOT NULL,
-    academico_email "char",
-    instituicao "char",
-    disciplina "char",
+    academico_email "varchar",
+    instituicao "varchar",
+    disciplina "varchar",
     "numQuest" integer,
-    "caminhoArquivo" "char",
+    "caminhoArquivo" "varchar",
     PRIMARY KEY ("atvID")
 );
 
+DROP TABLE IF EXISTS academico CASCADE;
 CREATE TABLE IF NOT EXISTS public.academico
 (
-    email "char" NOT NULL,
-    nome "char" NOT NULL,
-    instituicao "char",
+    email "varchar" NOT NULL,
+    nome "varchar" NOT NULL,
+	tipo "varchar" NOT NULL,
+    instituicao "varchar",
     PRIMARY KEY (email)
 );
 
+DROP TABLE IF EXISTS lista CASCADE;
 CREATE TABLE IF NOT EXISTS public.lista
 (
     gabarito boolean DEFAULT false,
@@ -29,6 +32,7 @@ CREATE TABLE IF NOT EXISTS public.lista
     PRIMARY KEY ("atvID")
 );
 
+DROP TABLE IF EXISTS prova CASCADE;
 CREATE TABLE IF NOT EXISTS public.prova
 (
     tipo integer DEFAULT 1,
@@ -36,16 +40,18 @@ CREATE TABLE IF NOT EXISTS public.prova
     PRIMARY KEY ("atvID")
 );
 
+DROP TABLE IF EXISTS pesquisa CASCADE;
 CREATE TABLE IF NOT EXISTS public.pesquisa
 (
     "atvID_atividade" integer NOT NULL,
-    email_academico "char" NOT NULL,
+    email_academico "varchar" NOT NULL,
     PRIMARY KEY ("atvID_atividade", email_academico)
 );
 
+DROP TABLE IF EXISTS materias CASCADE;
 CREATE TABLE IF NOT EXISTS public.materias
 (
-    materia "char" NOT NULL,
+    materia "varchar" NOT NULL,
     "atvID" integer NOT NULL,
     PRIMARY KEY (materia, "atvID")
 );
