@@ -6,19 +6,19 @@ BEGIN;
 CREATE TABLE IF NOT EXISTS public.atividade
 (
     "atvID" integer NOT NULL,
-    academico_email "char"[],
-    institucao "char"[],
-    disciplica "char"[],
+    academico_email "char",
+    instituicao "char",
+    disciplina "char",
     "numQuest" integer,
-    "caminhoArquivo" "char"[],
+    "caminhoArquivo" "char",
     PRIMARY KEY ("atvID")
 );
 
 CREATE TABLE IF NOT EXISTS public.academico
 (
-    email "char"[] NOT NULL,
-    nome "char"[] NOT NULL,
-    instituicao "char"[],
+    email "char" NOT NULL,
+    nome "char" NOT NULL,
+    instituicao "char",
     PRIMARY KEY (email)
 );
 
@@ -32,29 +32,22 @@ CREATE TABLE IF NOT EXISTS public.lista
 CREATE TABLE IF NOT EXISTS public.prova
 (
     tipo integer DEFAULT 1,
-    "atvdID" integer NOT NULL,
-    PRIMARY KEY ("atvdID")
-);
-
-CREATE UNLOGGED TABLE IF NOT EXISTS public.professor
-(
-    dep "char"[],
-    sala "char"[],
-    email_academico "char"[] NOT NULL,
-    PRIMARY KEY (email_academico)
-);
-
-CREATE TABLE IF NOT EXISTS public.aluno
-(
-    curso "char"[],
-    email_academico "char"[] NOT NULL,
-    PRIMARY KEY (email_academico)
+    "atvID" integer NOT NULL,
+    PRIMARY KEY ("atvID")
 );
 
 CREATE TABLE IF NOT EXISTS public.pesquisa
 (
-    "atvID_atividade" integer,
-    email_academico "char"[]
+    "atvID_atividade" integer NOT NULL,
+    email_academico "char" NOT NULL,
+    PRIMARY KEY ("atvID_atividade", email_academico)
+);
+
+CREATE TABLE IF NOT EXISTS public.materias
+(
+    materia "char" NOT NULL,
+    "atvID" integer NOT NULL,
+    PRIMARY KEY (materia, "atvID")
 );
 
 ALTER TABLE IF EXISTS public.atividade
@@ -73,31 +66,6 @@ ALTER TABLE IF EXISTS public.lista
     NOT VALID;
 
 
-ALTER TABLE IF EXISTS public.prova
-    ADD FOREIGN KEY ("atvdID")
-    REFERENCES public.atividade ("atvID") MATCH SIMPLE
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
-
-
-ALTER TABLE IF EXISTS public.professor
-    ADD FOREIGN KEY (email_academico)
-    REFERENCES public.academico (email) MATCH SIMPLE
-    ON UPDATE RESTRICT
-    ON DELETE RESTRICT
-    DEFERRABLE INITIALLY DEFERRED
-    NOT VALID;
-
-
-ALTER TABLE IF EXISTS public.aluno
-    ADD FOREIGN KEY (email_academico)
-    REFERENCES public.academico (email) MATCH SIMPLE
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
-
-
 ALTER TABLE IF EXISTS public.pesquisa
     ADD CONSTRAINT pesquisada FOREIGN KEY ("atvID_atividade")
     REFERENCES public.atividade ("atvID") MATCH SIMPLE
@@ -109,6 +77,14 @@ ALTER TABLE IF EXISTS public.pesquisa
 ALTER TABLE IF EXISTS public.pesquisa
     ADD CONSTRAINT pesquisa FOREIGN KEY (email_academico)
     REFERENCES public.academico (email) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public.materias
+    ADD FOREIGN KEY ("atvID")
+    REFERENCES public.atividade ("atvID") MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
