@@ -48,8 +48,8 @@ CREATE TABLE IF NOT EXISTS public.pesquisa
     PRIMARY KEY ("atvID_atividade", email_academico)
 );
 
-DROP TABLE IF EXISTS materias CASCADE;
-CREATE TABLE IF NOT EXISTS public.materias
+DROP TABLE IF EXISTS conteudo CASCADE;
+CREATE TABLE IF NOT EXISTS public.conteudo
 (
     materia "varchar" NOT NULL,
     "atvID" integer NOT NULL,
@@ -88,7 +88,7 @@ ALTER TABLE IF EXISTS public.pesquisa
     NOT VALID;
 
 
-ALTER TABLE IF EXISTS public.materias
+ALTER TABLE IF EXISTS public.conteudo
     ADD FOREIGN KEY ("atvID")
     REFERENCES public.atividade ("atvID") MATCH SIMPLE
     ON UPDATE NO ACTION
