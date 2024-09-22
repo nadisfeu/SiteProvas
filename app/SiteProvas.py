@@ -133,12 +133,19 @@ def pesquisar_aluno_bd(cur, nome, instituicao):
     return dados
 
 
-def pesquisar_atividade_bd(cur, disciplina=str, conteudo=list, instituicao=str, tipo=str):
-    select_script = f"select * from atividade A join conteudos C using (atvid), {tipo} T where (A.atvid = T.atvid and A.disciplina = '{disciplina}')"
-    for i in range(len(conteudo)):
-        select_script = select_script + f"or C = '{conteudo[i]}'"
-    select_script = select_script + ");"
+def pesquisar_atividade_disciplina(cur, disciplina=str, instituicao=str, tipo=str):
+    select_script = f"select * from atividade A, {tipo} T where (A.atvid = T.atvid and A.disciplina = '{disciplina}')" \
+                    f" and A.instuicao = '{instituicao}'" \
+                    f" and EXISTS (select * from conteudo C where C.atvid = A.atvid);"
+    cur.execute(select_script)
+    dados = cur.fetchall()
+    return dados
 
+
+def pesquisar_atividade_conteudo(cur, conteudo=str, instituicao=str, tipo=str):
+    select_script = f"select * from atividade A, {tipo} T where (A.atvid = T.atvid " \
+                    f" and EXISTS (select * from conteudo C where C.materia = {conteudo});" \
+                    f" and A.instuicao = '{instituicao}'"
     cur.execute(select_script)
     dados = cur.fetchall()
     return dados
