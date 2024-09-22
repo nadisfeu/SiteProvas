@@ -33,10 +33,10 @@ CREATE TABLE lista
 
 -- atributos lista (atvID, academico_email, instituicao, disciplina,nunQuest,caminhoArquivo,Gabarito)
 
-insert into lista values (1,'bruno@ufop', 'ufop','BD',10,'drive.com',true);
-insert into lista values (2,'ryan@ufop', 'ufop','AEDS 1',5,'drive.com',false);
-insert into lista values (3,'fernando@ufop', 'ufop','Programacao 1',6,'drive.com',false);
-insert into lista values (4,'paulo@ufop', 'ufop','Redes 1',9,'drive.com',true);
+insert into lista values (1,'bruno@ufop', 'ufop','BD',10,'drive.py.com',true);
+insert into lista values (2,'ryan@ufop', 'ufop','AEDS 1',5,'drive.py.com',false);
+insert into lista values (3,'fernando@ufop', 'ufop','Programacao 1',6,'drive.py.com',false);
+insert into lista values (4,'paulo@ufop', 'ufop','Redes 1',9,'drive.py.com',true);
 
 DROP TABLE IF EXISTS prova CASCADE;
 
@@ -48,10 +48,10 @@ CREATE TABLE prova
 
 -- atributos prova (atvID, academico_email, instituicao, disciplina,nunQuest,caminhoArquivo,tipo)
 
-insert into prova values (1,'bruno@ufop', 'ufop','BD',10,'drive.com',1);
-insert into prova values (2,'ryan@ufop', 'ufop','AEDS 1',5,'drive.com',2);
-insert into prova values (3,'fernando@ufop', 'ufop','Programacao 1',6,'drive.com',3);
-insert into prova values (4,'paulo@ufop', 'ufop','Redes 1',9,'drive.com',9);
+insert into prova values (1,'bruno@ufop', 'ufop','BD',10,'drive.py.com',1);
+insert into prova values (2,'ryan@ufop', 'ufop','AEDS 1',5,'drive.py.com',2);
+insert into prova values (3,'fernando@ufop', 'ufop','Programacao 1',6,'drive.py.com',3);
+insert into prova values (4,'paulo@ufop', 'ufop','Redes 1',9,'drive.py.com',9);
 
 DROP TABLE IF EXISTS professor CASCADE;
 

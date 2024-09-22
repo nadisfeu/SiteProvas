@@ -5,13 +5,13 @@ BEGIN;
 DROP TABLE IF EXISTS atividade CASCADE;
 CREATE TABLE IF NOT EXISTS public.atividade
 (
-    "atvID" integer NOT NULL,
+    "atvid" integer NOT NULL,
     academico_email "varchar",
     instituicao "varchar",
     disciplina "varchar",
     "numQuest" integer,
     "caminhoArquivo" "varchar",
-    PRIMARY KEY ("atvID")
+    PRIMARY KEY ("atvid")
 );
 
 DROP TABLE IF EXISTS academico CASCADE;
@@ -28,32 +28,32 @@ DROP TABLE IF EXISTS lista CASCADE;
 CREATE TABLE IF NOT EXISTS public.lista
 (
     gabarito boolean DEFAULT false,
-    "atvID" integer NOT NULL,
-    PRIMARY KEY ("atvID")
+    "atvid" integer NOT NULL,
+    PRIMARY KEY ("atvid")
 );
 
 DROP TABLE IF EXISTS prova CASCADE;
 CREATE TABLE IF NOT EXISTS public.prova
 (
     tipo integer DEFAULT 1,
-    "atvID" integer NOT NULL,
-    PRIMARY KEY ("atvID")
+    "atvid" integer NOT NULL,
+    PRIMARY KEY ("atvid")
 );
 
 DROP TABLE IF EXISTS pesquisa CASCADE;
 CREATE TABLE IF NOT EXISTS public.pesquisa
 (
-    "atvID_atividade" integer NOT NULL,
+    "atvid_atividade" integer NOT NULL,
     email_academico "varchar" NOT NULL,
-    PRIMARY KEY ("atvID_atividade", email_academico)
+    PRIMARY KEY ("atvid_atividade", email_academico)
 );
 
 DROP TABLE IF EXISTS conteudo CASCADE;
 CREATE TABLE IF NOT EXISTS public.conteudo
 (
     materia "varchar" NOT NULL,
-    "atvID" integer NOT NULL,
-    PRIMARY KEY (materia, "atvID")
+    "atvid" integer NOT NULL,
+    PRIMARY KEY (materia, "atvid")
 );
 
 ALTER TABLE IF EXISTS public.atividade
@@ -65,16 +65,16 @@ ALTER TABLE IF EXISTS public.atividade
 
 
 ALTER TABLE IF EXISTS public.lista
-    ADD FOREIGN KEY ("atvID")
-    REFERENCES public.atividade ("atvID") MATCH SIMPLE
+    ADD FOREIGN KEY ("atvid")
+    REFERENCES public.atividade ("atvid") MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
 
 
 ALTER TABLE IF EXISTS public.pesquisa
-    ADD CONSTRAINT pesquisada FOREIGN KEY ("atvID_atividade")
-    REFERENCES public.atividade ("atvID") MATCH SIMPLE
+    ADD CONSTRAINT pesquisada FOREIGN KEY ("atvid_atividade")
+    REFERENCES public.atividade ("atvid") MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
@@ -89,8 +89,8 @@ ALTER TABLE IF EXISTS public.pesquisa
 
 
 ALTER TABLE IF EXISTS public.conteudo
-    ADD FOREIGN KEY ("atvID")
-    REFERENCES public.atividade ("atvID") MATCH SIMPLE
+    ADD FOREIGN KEY ("atvid")
+    REFERENCES public.atividade ("atvid") MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
