@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS public.atividade
     academico_email "varchar",
     instituicao "varchar",
     disciplina "varchar",
-    "numQuest" integer,
-    "caminhoArquivo" "varchar",
+    "numquest" integer,
+    "caminhoarquivo" "varchar",
     PRIMARY KEY ("atvid")
 );
 
