@@ -12,7 +12,7 @@ conn = None
 cur = None
 
 
-def verficar_email(email):
+def verificar_email(email):
     regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
     return re.search(regex, email)
 
