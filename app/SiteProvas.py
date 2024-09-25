@@ -173,6 +173,10 @@ def inserir_link_listas_drive(id, email, instituicao, disciplina, num_quest, cam
 
 def adicionar_prova_usuario(email):
     id = random.random()
+    select_script = f"SELECT * FROM atividade F WHERE EXISTS F.atvid = {id};"
+    while cur.execute(select_script):  # verifica se existe alguma atividade com o id
+        id = random.random()
+
     select_script = f"select A.instituicao from academico A where A.email = '{email}'"
     cur.execute(select_script)
     instituicao = cur.fetchall()[0][0]
