@@ -1,11 +1,11 @@
 import SiteProvas
-import tempCodeRunnerFile
+# import tempCodeRunnerFile
 
 connect = SiteProvas.conn
 cursor = SiteProvas.cur
 
 SiteProvas.povoar()
 
-tempCodeRunnerFile
+# tempCodeRunnerFile
 
 SiteProvas.termina_conexao()
