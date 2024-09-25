@@ -1,6 +1,5 @@
 import SiteProvas
 
 cur = SiteProvas.conexao_server()
-list = SiteProvas.pesquisar_aluno_bd('fernando', 'ufop', cur=cur)
-print(list)
+list = SiteProvas.povoar()
 SiteProvas.termina_conexao()

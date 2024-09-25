@@ -2,9 +2,9 @@ import psycopg2
 import re
 
 hostname = 'localhost'
-database = 'SiteProvas'
+database = 'AtividadeBD'
 username = 'postgres'
-pwd = '123456'
+pwd = '123'
 port_id = 5432
 conn = None
 cur = None
@@ -20,6 +20,30 @@ def inserir_academico(email, nome, tipo, instituicao):
     insert_scrip = 'INSERT INTO ACADEMICO (email, nome, tipo, instituicao) VALUES (%s, %s, %s, %s);'
     insert_values = (email, nome, tipo, instituicao)
     cur.execute(insert_scrip, insert_values)
+
+
+def povoar():
+    
+    insert_script = 'DROP TABLE IF EXISTS academico CASCADE;'
+    cur.execute(insert_script)
+    inserir_academico('alexandre@ufop', 'Alexandre','Professor', 'UFOP')
+    inserir_academico('jao@ufop', 'jao','Aluno', 'UFOP')
+    inserir_academico('jorginho@ufop', 'jorge','Aluno', 'UFOP')
+    inserir_academico('augusto@ufop', 'augusto','Professor', 'UFOP')
+    insert_script = 'DROP TABLE IF EXISTS atividade CASCADE;'
+    cur.execute(insert_script)
+    inserir_atividade(1,'alexandre@ufop','UFOP','Banco de Dados 1',5,'x.com')
+    inserir_atividade(2,'augusto@ufop','UFOP','Redes 1',7,'x.com')
+    inserir_atividade(3,'alexandre@ufop','UFOP','Calculo 1',1,'x.com')
+    inserir_atividade(4,'augusto@ufop','UFOP','AEDS 2',10,'x.com')
+    insert_script = 'DROP TABLE IF EXISTS prova CASCADE;'
+    cur.execute(insert_script)
+    inserir_prova('P1',1)
+    inserir_prova('P3',2)
+    insert_script = 'DROP TABLE IF EXISTS lista CASCADE;'
+    cur.execute(insert_script)
+    inserir_lista(True, 3)
+    inserir_lista(False, 4)
 
 
 # CORRIGIR ERROS DE GRAMATICA EM ATIVIDADE NO BANCO DE DADOS/SCRIPT!!!!!!!
