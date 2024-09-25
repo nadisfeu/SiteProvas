@@ -180,8 +180,8 @@ def adicionar_prova_usuario(email):
     num_quest = int(input("Digite o numero de questoes: "))
     caminho = input("Cole o link do drive (o link deverá está público):")
     tipo = int(input("Qual o tipo da prova? (1,2,3...)"))
-    conteudotemp = input("Digite os conteudos:")
-    conteudo = conteudotemp.split(' ')
+    conteudotemp = input("Digite os conteudos (Ex: algebra linear, integracao,... ")
+    conteudo = conteudotemp.split(',')
 
     inserir_link_provas_drive(id=id, academico_email=email, instituicao=instituicao,
                               disciplina=disciplina, num_quest=num_quest, caminho_arquivo=caminho,
