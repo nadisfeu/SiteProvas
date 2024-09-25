@@ -16,68 +16,67 @@ def verficar_email(email):
 
 
 # funcoes de insercao
-def inserir_academico(email, nome, tipo, instituicao):
+def inserir_academico(cur, email, nome, tipo, instituicao):
     insert_scrip = 'INSERT INTO ACADEMICO (email, nome, tipo, instituicao) VALUES (%s, %s, %s, %s);'
     insert_values = (email, nome, tipo, instituicao)
     cur.execute(insert_scrip, insert_values)
 
 
-def povoar():
-    
+def povoar(cur):
     insert_script = 'DROP TABLE IF EXISTS academico CASCADE;'
     cur.execute(insert_script)
-    inserir_academico('alexandre@ufop', 'Alexandre','Professor', 'UFOP')
-    inserir_academico('jao@ufop', 'jao','Aluno', 'UFOP')
-    inserir_academico('jorginho@ufop', 'jorge','Aluno', 'UFOP')
-    inserir_academico('augusto@ufop', 'augusto','Professor', 'UFOP')
+    inserir_academico(cur, 'alexandre@ufop', 'Alexandre', 'Professor', 'UFOP')
+    inserir_academico(cur, 'jao@ufop', 'jao', 'Aluno', 'UFOP')
+    inserir_academico(cur, 'jorginho@ufop', 'jorge', 'Aluno', 'UFOP')
+    inserir_academico(cur, 'augusto@ufop', 'augusto', 'Professor', 'UFOP')
     insert_script = 'DROP TABLE IF EXISTS atividade CASCADE;'
     cur.execute(insert_script)
-    inserir_atividade(1,'alexandre@ufop','UFOP','Banco de Dados 1',5,'x.com')
-    inserir_atividade(2,'augusto@ufop','UFOP','Redes 1',7,'x.com')
-    inserir_atividade(3,'alexandre@ufop','UFOP','Calculo 1',1,'x.com')
-    inserir_atividade(4,'augusto@ufop','UFOP','AEDS 2',10,'x.com')
+    inserir_atividade(cur, 1, 'alexandre@ufop', 'UFOP', 'Banco de Dados 1', 5, 'x.com')
+    inserir_atividade(cur, 2, 'augusto@ufop', 'UFOP', 'Redes 1', 7, 'x.com')
+    inserir_atividade(cur, 3, 'alexandre@ufop', 'UFOP', 'Calculo 1', 1, 'x.com')
+    inserir_atividade(cur, 4, 'augusto@ufop', 'UFOP', 'AEDS 2', 10, 'x.com')
     insert_script = 'DROP TABLE IF EXISTS prova CASCADE;'
     cur.execute(insert_script)
-    inserir_prova('P1',1)
-    inserir_prova('P3',2)
+    inserir_prova(cur, 'P1', 1)
+    inserir_prova(cur, 'P3', 2)
     insert_script = 'DROP TABLE IF EXISTS lista CASCADE;'
     cur.execute(insert_script)
-    inserir_lista(True, 3)
-    inserir_lista(False, 4)
+    inserir_lista(cur, True, 3)
+    inserir_lista(cur, False, 4)
 
 
 # CORRIGIR ERROS DE GRAMATICA EM ATIVIDADE NO BANCO DE DADOS/SCRIPT!!!!!!!
-def inserir_atividade(id, academico_email, instituicao, disciplina, num_request, caminho_arquivo):
+def inserir_atividade(cur, id, academico_email, instituicao, disciplina, num_request, caminho_arquivo):
     insert_scrip = 'INSERT INTO ATIVIDADE (atvid, academico_email, instituicao, disciplina, numQuest, caminhoArquivo) VALUES (%s, %s, %s, %s, %s, %s);'
     insert_values = (id, academico_email, instituicao, disciplina, num_request, caminho_arquivo)
     cur.execute(insert_scrip, insert_values)
 
 
-def inserir_lista(gabarito, id):
+def inserir_lista(cur, gabarito, id):
     insert_scrip = 'INSERT INTO LISTA (gabarito, atvid) VALUES (%s, %s);'
     insert_values = (gabarito, id)
     cur.execute(insert_scrip, insert_values)
 
 
-def inserir_conteudo(materia, id):
+def inserir_conteudo(cur, materia, id):
     insert_scrip = 'INSERT INTO LISTA (gabarito, atvid) VALUES (%s, %s);'
     insert_values = (materia, id)
     cur.execute(insert_scrip, insert_values)
 
 
-def inserir_prova(tipo, id):
+def inserir_prova(cur, tipo, id):
     insert_scrip = 'INSERT INTO LISTA (tipo, atvid) VALUES (%s, %s);'
     insert_values = (tipo, id)
     cur.execute(insert_scrip, insert_values)
 
 
-def inserir_pesquisa(id_atividade, email_academico):
+def inserir_pesquisa(cur, id_atividade, email_academico):
     insert_script = 'INSERT INTO PESQUISA (atvid_atividade, email_academico) VALUES (%s, %s);'
     insert_values = (id_atividade, email_academico)
     cur.execute(insert_script, insert_values)
 
 
-def pesquisa(disciplina, tipo):
+def pesquisa(cur, disciplina, tipo):
     if tipo == 'prova':
         select_script = 'select disciplina, tipo, caminhoArquivo from atividade LEFT JOIN prova where disciplina=' + disciplina + ';'
         cur.execute(select_script)
@@ -173,4 +172,3 @@ def pesquisar_atividade_conteudo(cur, conteudo=str, instituicao=str, tipo=str):
     cur.execute(select_script)
     dados = cur.fetchall()
     return dados
-
