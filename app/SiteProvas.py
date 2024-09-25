@@ -36,8 +36,8 @@ def povoar(cur):
     inserir_atividade(cur, 3, 'alexandre@ufop', 'UFOP', 'Calculo 1', 1, 'x.com')
     inserir_atividade(cur, 4, 'augusto@ufop', 'UFOP', 'AEDS 2', 10, 'x.com')
     
-    inserir_prova(cur, 'P1', 1)
-    inserir_prova(cur, 'P3', 2)
+    inserir_prova(cur, 1, 1)
+    inserir_prova(cur, 1, 2)
     
     inserir_lista(cur, True, 3)
     inserir_lista(cur, False, 4)
@@ -63,7 +63,7 @@ def inserir_conteudo(cur, materia, id):
 
 
 def inserir_prova(cur, tipo, id):
-    insert_scrip = 'INSERT INTO lista (tipo, atvid) VALUES (%s, %s);'
+    insert_scrip = 'INSERT INTO prova (tipo, atvid) VALUES (%s, %s);'
     insert_values = (tipo, id)
     cur.execute(insert_scrip, insert_values)
 
