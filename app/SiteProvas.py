@@ -20,7 +20,7 @@ def verficar_email(email):
 # funcoes de insercao
 def inserir_academico(cur, email, nome, tipo, instituicao):
     insert_scrip = 'INSERT INTO academico(email, nome, tipo, instituicao) VALUES (%s, %s, %s, %s);'
-    insert_values = (cur, email, nome, tipo, instituicao)
+    insert_values = (email, nome, tipo, instituicao)
     cur.execute(insert_scrip, insert_values)
 
 
@@ -50,31 +50,31 @@ def povoar(cur):
 # CORRIGIR ERROS DE GRAMATICA EM ATIVIDADE NO BANCO DE DADOS/SCRIPT!!!!!!!
 def inserir_atividade(cur, id, academico_email, instituicao, disciplina, num_request, caminho_arquivo):
     insert_scrip = 'INSERT INTO atividade (atvid, academico_email, instituicao, disciplina, numQuest, caminhoArquivo) VALUES (%s, %s, %s, %s, %s, %s);'
-    insert_values = (cur, id, academico_email, instituicao, disciplina, num_request, caminho_arquivo)
+    insert_values = (id, academico_email, instituicao, disciplina, num_request, caminho_arquivo)
     cur.execute(insert_scrip, insert_values)
 
 
 def inserir_lista(cur, gabarito, id):
     insert_scrip = 'INSERT INTO lista (gabarito, atvid) VALUES (%s, %s);'
-    insert_values = (cur, gabarito, id)
+    insert_values = (gabarito, id)
     cur.execute(insert_scrip, insert_values)
 
 
 def inserir_conteudo(cur, materia, id):
     insert_scrip = 'INSERT INTO lista (gabarito, atvid) VALUES (%s, %s);'
-    insert_values = (cur, materia, id)
+    insert_values = (materia, id)
     cur.execute(insert_scrip, insert_values)
 
 
 def inserir_prova(cur, tipo, id):
     insert_scrip = 'INSERT INTO lista (tipo, atvid) VALUES (%s, %s);'
-    insert_values = (cur, tipo, id)
+    insert_values = (tipo, id)
     cur.execute(insert_scrip, insert_values)
 
 
 def inserir_pesquisa(cur, id_atividade, email_academico):
     insert_script = 'INSERT INTO pesquisa (atvid_atividade, email_academico) VALUES (%s, %s);'
-    insert_values = (cur, id_atividade, email_academico)
+    insert_values = (id_atividade, email_academico)
     cur.execute(insert_script, insert_values)
 
 
