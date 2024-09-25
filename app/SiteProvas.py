@@ -8,10 +8,11 @@ hostname = 'localhost'
 database = 'SiteProvas'
 username = 'postgres'
 # pwd = '123'
-pwd = '123456'
+pwd = '12345'
 port_id = 5432
 conn = None
 cur = None
+email_geral = None
 
 try:
     conn = psycopg2.connect(host=hostname, dbname=database, user=username, password=pwd,
@@ -76,33 +77,6 @@ def inserir_pesquisa(id_atividade, email_academico):
     insert_values = (id_atividade, email_academico)
     cur.execute(insert_script, insert_values)
     conn.commit()
-
-
-# registros de email
-def sign_up():
-    email = input("\nDigite seu email: ")
-    nome = input("Digite seu nome: ")
-    instituicao = input("Qual e sua instituicao?")
-    tipo = input("Voce é aluno ou professor?")
-    if not verificar_email(email):
-        print("\nEmail invalido!")
-        return 0
-
-    try:
-        inserir_academico(email, nome, tipo, instituicao)
-        return 1
-    except Exception as error:
-        print(error)
-
-
-def login():
-    email = input("\nDigite seu email: ")
-    script = f"SELECT * FROM academico WHERE email = '{email}'"
-    cur.execute(script)
-    usuario = None
-    usuario = cur.fetchall()
-    return usuario
-
 
 # Pesquisas
 
@@ -170,3 +144,36 @@ def inserir_link_listas_drive(id, email, instituicao, disciplina, num_quest, cam
     inserir_lista(gabarito=gabarito, id=id)
     for conte in conteudo:
         inserir_conteudo(id=id, materia=conte)
+        
+
+def novo_login():
+    
+    while (True):
+     email_informado = input("Informe seu email: ")
+     script = f"SELECT F.email FROM academico F WHERE EXISTS (SELECT * FROM academico Q WHERE Q.email = '{email_informado}' AND Q.email = F.email) ;"
+     cur.execute(script)
+     dados = cur.fetchall()
+     if not dados:
+        print('Cadastro não encontrado')
+        nome = input("Digite seu nome: ")
+        instituicao = input("Qual e sua instituicao?")
+        tipo = input("Voce é aluno ou professor?")
+        if not verificar_email(email_informado):
+            print("\nEmail invalido!")
+            resposta = 0
+
+        try:
+            inserir_academico(email_informado, nome, tipo, instituicao)
+            resposta = 1
+        except Exception as error:
+            print(error)
+        if resposta == 1:
+            print("Cadastro efetuado com sucesso!")
+            break
+        else:
+            print("\nCadastro nao foi possivel!")
+
+     else: 
+        print('Login efetuado com sucesso')
+        break
+    email_geral = email_informado
