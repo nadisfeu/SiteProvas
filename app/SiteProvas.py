@@ -2,27 +2,30 @@ import psycopg2
 import re
 
 hostname = 'localhost'
-#database = 'AtividadeBD'
+# database = 'AtividadeBD'
 database = 'SiteProvas'
 username = 'postgres'
-#pwd = '123'
+# pwd = '123'
 pwd = '123456'
 port_id = 5432
 conn = None
 cur = None
 
 try:
-    conn = psycopg2.connect(host=hostname, dbname=database, user=username, password=pwd, port=port_id)  # funcao que estabelece conexao com o bd
+    conn = psycopg2.connect(host=hostname, dbname=database, user=username, password=pwd,
+                            port=port_id)  # funcao que estabelece conexao com o bd
     cur = conn.cursor()  # funcao para auxiliar nas operacoes sql
 
 except Exception as error:
     print(error)
+
 
 def termina_conexao():
     if cur is not None:
         cur.close()
     if conn is not None:
         conn.close()
+
 
 def verificar_email(email):
     regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
@@ -36,11 +39,13 @@ def inserir_academico(email, nome, tipo, instituicao):
     cur.execute(insert_scrip, insert_values)
     conn.commit()
 
+
 def inserir_atividade(id, academico_email, instituicao, disciplina, num_quest, caminho_arquivo):
     insert_scrip = 'INSERT INTO atividade (atvid, academico_email, instituicao, disciplina, numquest, caminhoarquivo) VALUES (%s, %s, %s, %s, %s, %s);'
     insert_values = (id, academico_email.lower(), instituicao, disciplina.lower(), num_quest, caminho_arquivo)
     cur.execute(insert_scrip, insert_values)
     conn.commit()
+
 
 def inserir_lista(gabarito, id):
     insert_scrip = 'INSERT INTO lista (gabarito, atvid) VALUES (%s, %s);'
@@ -55,11 +60,13 @@ def inserir_conteudo(materia, id):
     cur.execute(insert_scrip, insert_values)
     conn.commit()
 
+
 def inserir_prova(tipo, id):
     insert_scrip = 'INSERT INTO prova (tipo, atvid) VALUES (%s, %s);'
     insert_values = (tipo, id)
     cur.execute(insert_scrip, insert_values)
     conn.commit()
+
 
 def inserir_pesquisa(id_atividade, email_academico):
     insert_script = 'INSERT INTO pesquisa (atvid_atividade, email_academico) VALUES (%s, %s);'
@@ -68,7 +75,7 @@ def inserir_pesquisa(id_atividade, email_academico):
     conn.commit()
 
 
-#registros de email
+# registros de email
 def sign_up():
     email = input("\nDigite seu email: ")
     nome = input("Digite seu nome: ")
@@ -105,6 +112,7 @@ def sign_up():
     #         else:
     #             print("\nOpcao invalida!")
 
+
 def login():
     email = input("\nDigite seu email: ")
     script = f"SELECT * FROM academico WHERE email = '{email}'"
@@ -114,7 +122,7 @@ def login():
     return usuario
 
 
-#Pesquisas
+# Pesquisas
 
 def pesquisa(disciplina, tipo):
     if tipo == 'prova':
@@ -129,6 +137,7 @@ def pesquisa(disciplina, tipo):
         return dados
     else:
         print("\nNao foi possivel realizar a pesquisa")
+
 
 def pesquisar_aluno_bd(nome, instituicao):
     print(f"select * from academico A where A.nome = '{nome}' and A.instituicao = '{instituicao}';")
@@ -158,22 +167,19 @@ def pesquisar_atividade_conteudo(conteudo=str, instituicao=str, tipo=str):
 
 # Povoar
 def povoar():
-    
     inserir_academico('alexandre@ufop', 'Alexandre', 'Professor', 'UFOP')
     inserir_academico('jao@ufop', 'jao', 'Aluno', 'UFOP')
     inserir_academico('jorginho@ufop', 'jorge', 'Aluno', 'UFOP')
     inserir_academico('augusto@ufop', 'augusto', 'Professor', 'UFOP')
     inserir_academico('juvenil@ufop', 'juvenas', 'professor', 'UFOP')
-    
+
     inserir_atividade(1, 'alexandre@ufop', 'UFOP', 'Banco de Dados 1', 5, '')
     inserir_atividade(2, 'augusto@ufop', 'UFOP', 'Redes 1', 7, 'x.com')
     inserir_atividade(3, 'alexandre@ufop', 'UFOP', 'Calculo 1', 1, 'x.com')
     inserir_atividade(4, 'augusto@ufop', 'UFOP', 'AEDS 2', 10, 'x.com')
-    
+
     inserir_prova(1, 1)
     inserir_prova(1, 2)
-    
+
     inserir_lista(True, 3)
     inserir_lista(False, 4)
-
-def adiciona_pdf():
