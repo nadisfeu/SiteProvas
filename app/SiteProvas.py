@@ -1,8 +1,8 @@
 import psycopg2
 import re
+import random
 
-
-#teste
+# teste
 hostname = 'localhost'
 # database = 'AtividadeBD'
 database = 'SiteProvas'
@@ -78,6 +78,35 @@ def inserir_pesquisa(id_atividade, email_academico):
     cur.execute(insert_script, insert_values)
     conn.commit()
 
+<<<<<<< HEAD
+=======
+
+# registros de email
+def sign_up():
+    email = input("\nDigite seu email: ")
+    nome = input("Digite seu nome: ")
+    instituicao = input("Qual e sua instituicao?")
+    tipo = input("Voce é aluno ou professor?")
+    if not verificar_email(email):
+        print("\nEmail invalido!")
+        return 0
+
+    try:
+        inserir_academico(email, nome, tipo, instituicao)
+        return 1
+    except Exception as error:
+        print(error)
+
+
+def login():
+    email = input("\nDigite seu email: ")
+    script = f"SELECT * FROM academico WHERE email = '{email}'"
+    cur.execute(script)
+    usuario = cur.fetchall()
+    return usuario
+
+
+>>>>>>> 1cea93a0cdf70b4ab7e72ecd469a46424cd8d1fd
 # Pesquisas
 
 def pesquisa(disciplina, tipo):
@@ -144,6 +173,7 @@ def inserir_link_listas_drive(id, email, instituicao, disciplina, num_quest, cam
     inserir_lista(gabarito=gabarito, id=id)
     for conte in conteudo:
         inserir_conteudo(id=id, materia=conte)
+<<<<<<< HEAD
         
 
 def novo_login():
@@ -177,3 +207,26 @@ def novo_login():
         print('Login efetuado com sucesso')
         break
     email_geral = email_informado
+=======
+
+
+def adicionar_prova_usuario(email):
+    id = random.random()
+    select_script = f"SELECT * FROM atividade F WHERE F.atvid = {id};"
+    while cur.execute(select_script):  # verifica se existe alguma atividade com o id
+        id = random.random()
+
+    select_script = f"select A.instituicao from academico A where A.email = '{email}'"
+    cur.execute(select_script)
+    instituicao = cur.fetchall()[0][0]
+    disciplina = input("Digite a disciplina da prova: ")
+    num_quest = int(input("Digite o numero de questoes: "))
+    caminho = input("Cole o link do drive (o link deverá está público):")
+    tipo = int(input("Qual o tipo da prova? (1,2,3...)"))
+    conteudotemp = input("Digite os conteudos (Ex: algebra linear, integracao,... ")
+    conteudo = conteudotemp.split(',')
+
+    inserir_link_provas_drive(id=id, academico_email=email, instituicao=instituicao,
+                              disciplina=disciplina, num_quest=num_quest, caminho_arquivo=caminho,
+                              tipo=tipo, conteudo=conteudo)
+>>>>>>> 1cea93a0cdf70b4ab7e72ecd469a46424cd8d1fd
