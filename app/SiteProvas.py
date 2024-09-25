@@ -37,14 +37,15 @@ def verificar_email(email):
 # funcoes de insercao
 def inserir_academico(email, nome, tipo, instituicao):
     insert_scrip = "INSERT INTO academico (email, nome, tipo, instituicao) VALUES (%s, %s, %s, %s);"
-    insert_values = (email.lower(), nome.lower(), tipo.lower(), instituicao)
+    insert_values = (email.lower(), nome.lower(), tipo.lower(), instituicao.upper())
     cur.execute(insert_scrip, insert_values)
     conn.commit()
 
 
 def inserir_atividade(id, academico_email, instituicao, disciplina, num_quest, caminho_arquivo):
-    insert_scrip = 'INSERT INTO atividade (atvid, academico_email, instituicao, disciplina, numquest, caminhoarquivo) VALUES (%s, %s, %s, %s, %s, %s);'
-    insert_values = (id, academico_email.lower(), instituicao, disciplina.lower(), num_quest, caminho_arquivo)
+    insert_scrip = 'INSERT INTO atividade (atvid, academico_email, instituicao, disciplina, numquest, caminhoarquivo) ' \
+                   'VALUES (%s, %s, %s, %s, %s, %s);'
+    insert_values = (id, academico_email.lower(), instituicao.upper(), disciplina.lower(), num_quest, caminho_arquivo)
     cur.execute(insert_scrip, insert_values)
     conn.commit()
 
@@ -57,7 +58,7 @@ def inserir_lista(gabarito, id):
 
 
 def inserir_conteudo(materia, id):
-    insert_scrip = 'INSERT INTO lista (gabarito, atvid) VALUES (%s, %s);'
+    insert_scrip = 'INSERT INTO conteudo (materia, atvid) VALUES (%s, %s);'
     insert_values = (materia, id)
     cur.execute(insert_scrip, insert_values)
     conn.commit()
@@ -169,19 +170,24 @@ def pesquisar_atividade_conteudo(conteudo=str, instituicao=str, tipo=str):
 
 # Povoar
 def povoar():
-    inserir_academico('alexandre@ufop', 'Alexandre', 'Professor', 'UFOP')
     inserir_academico('jao@ufop', 'jao', 'Aluno', 'UFOP')
-    inserir_academico('jorginho@ufop', 'jorge', 'Aluno', 'UFOP')
-    inserir_academico('augusto@ufop', 'augusto', 'Professor', 'UFOP')
-    inserir_academico('juvenil@ufop', 'juvenas', 'professor', 'UFOP')
 
-    inserir_atividade(1, 'alexandre@ufop', 'UFOP', 'Banco de Dados 1', 5, '')
-    inserir_atividade(2, 'augusto@ufop', 'UFOP', 'Redes 1', 7, 'x.com')
-    inserir_atividade(3, 'alexandre@ufop', 'UFOP', 'Calculo 1', 1, 'x.com')
-    inserir_atividade(4, 'augusto@ufop', 'UFOP', 'AEDS 2', 10, 'x.com')
+    inserir_link_provas_drive(1, 'jao@ufop', 'ufop', 'fisica', 4,
+                              'https://drive.google.com/file/d/1U4IFIr-Bs5DcG6w06NYh7m-7s7vN_HOU/view?usp=sharing',
+                              1, ['vetor', 'mecanica', 'aceleracao', 'deslocamento'])
 
-    inserir_prova(1, 1)
-    inserir_prova(1, 2)
 
-    inserir_lista(True, 3)
-    inserir_lista(False, 4)
+def inserir_link_provas_drive(id, email, instituicao, disciplina, num_quest, caminho, tipo, conteudo=list):
+    inserir_atividade(id=id, academico_email=email, instituicao=instituicao,
+                      disciplina=disciplina, num_quest=num_quest, caminho_arquivo=caminho)
+    inserir_prova(tipo=tipo, id=id)
+    for conte in conteudo:
+        inserir_conteudo(id=id, materia=conte)
+
+
+def inserir_link_listas_drive(id, email, instituicao, disciplina, num_quest, caminho, gabarito=bool, conteudo=list):
+    inserir_atividade(id=id, academico_email=email, instituicao=instituicao,
+                      disciplina=disciplina, num_quest=num_quest, caminho_arquivo=caminho)
+    inserir_lista(gabarito=gabarito, id=id)
+    for conte in conteudo:
+        inserir_conteudo(id=id, materia=conte)
