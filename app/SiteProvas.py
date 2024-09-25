@@ -1,6 +1,8 @@
 import psycopg2
 import re
 
+
+#teste
 hostname = 'localhost'
 # database = 'AtividadeBD'
 database = 'SiteProvas'
