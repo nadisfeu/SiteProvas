@@ -22,7 +22,7 @@ def inserir_academico(email, nome, tipo, instituicao):
     cur.execute(insert_scrip, insert_values)
 
 
-def povoar():
+def povoar(cur):
     
     insert_script = 'DROP TABLE IF EXISTS academico CASCADE;'
     cur.execute(insert_script)
