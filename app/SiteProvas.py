@@ -2,12 +2,10 @@ import psycopg2
 import re
 import random
 
-# teste
+
 hostname = 'localhost'
-# database = 'AtividadeBD'
 database = 'SiteProvas'
 username = 'postgres'
-# pwd = '123'
 pwd = '123456'
 port_id = 5432
 conn = None
@@ -162,11 +160,12 @@ def novo_login():
             print("\nEmail invalido!")
             resposta = 0
 
-        try:
-            inserir_academico(email_informado, nome, tipo, instituicao)
-            resposta = 1
-        except Exception as error:
-            print(error)
+        else: 
+            try:
+                inserir_academico(email_informado, nome, tipo, instituicao)
+                resposta = 1
+            except Exception as error:
+                print(error)
         if resposta == 1:
             print("Cadastro efetuado com sucesso!")
             break
@@ -176,8 +175,19 @@ def novo_login():
      else: 
         print('Login efetuado com sucesso')
         break
+    
     email_geral = email_informado
 
+def resetar_tabelas():
+
+    fd = open(r"C:\Users\PP\Documents\BD\SiteProvas\sql\CriacaoTabela100PorcentoAtualizado.sql",'r')
+    arquivo = fd.read()
+    fd.close()
+
+    arquivo = arquivo.split(';')
+
+    for comandos in arquivo: 
+            cur.execute(comandos)
 
 def adicionar_prova_usuario(email):
     id = random.random()

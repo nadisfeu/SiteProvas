@@ -3,6 +3,7 @@ import SiteProvas
 connect = SiteProvas.conn
 cursor = SiteProvas.cur
 
-SiteProvas.novo_login()
+SiteProvas.resetar_tabelas()
+#SiteProvas.povoar()
 
 SiteProvas.termina_conexao()
