@@ -175,7 +175,7 @@ def adicionar_prova_usuario(email):
     id = random.random()
     select_script = f"select A.instituicao from academico A where A.email = '{email}'"
     cur.execute(select_script)
-    instituicao = cur.fetchall()[0]
+    instituicao = cur.fetchall()[0][0]
     disciplina = input("Digite a disciplina da prova: ")
     num_quest = int(input("Digite o numero de questoes: "))
     caminho = input("Cole o link do drive (o link deverá está público):")
