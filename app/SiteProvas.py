@@ -32,13 +32,13 @@ def verificar_email(email):
 # funcoes de insercao
 def inserir_academico(email, nome, tipo, instituicao):
     insert_scrip = "INSERT INTO academico (email, nome, tipo, instituicao) VALUES (%s, %s, %s, %s);"
-    insert_values = (email, nome, tipo, instituicao)
+    insert_values = (email.lower(), nome.lower(), tipo.lower(), instituicao)
     cur.execute(insert_scrip, insert_values)
     conn.commit()
 
 def inserir_atividade(id, academico_email, instituicao, disciplina, num_quest, caminho_arquivo):
     insert_scrip = 'INSERT INTO atividade (atvid, academico_email, instituicao, disciplina, numquest, caminhoarquivo) VALUES (%s, %s, %s, %s, %s, %s);'
-    insert_values = (id, academico_email, instituicao, disciplina, num_quest, caminho_arquivo)
+    insert_values = (id, academico_email.lower(), instituicao, disciplina.lower(), num_quest, caminho_arquivo)
     cur.execute(insert_scrip, insert_values)
     conn.commit()
 
@@ -155,15 +155,17 @@ def pesquisar_atividade_conteudo(conteudo=str, instituicao=str, tipo=str):
     dados = cur.fetchall()
     return dados
 
-#Povoar
+
+# Povoar
 def povoar():
     
     inserir_academico('alexandre@ufop', 'Alexandre', 'Professor', 'UFOP')
     inserir_academico('jao@ufop', 'jao', 'Aluno', 'UFOP')
     inserir_academico('jorginho@ufop', 'jorge', 'Aluno', 'UFOP')
     inserir_academico('augusto@ufop', 'augusto', 'Professor', 'UFOP')
+    inserir_academico('juvenil@ufop', 'juvenas', 'professor', 'UFOP')
     
-    inserir_atividade(1, 'alexandre@ufop', 'UFOP', 'Banco de Dados 1', 5, 'x.com')
+    inserir_atividade(1, 'alexandre@ufop', 'UFOP', 'Banco de Dados 1', 5, '')
     inserir_atividade(2, 'augusto@ufop', 'UFOP', 'Redes 1', 7, 'x.com')
     inserir_atividade(3, 'alexandre@ufop', 'UFOP', 'Calculo 1', 1, 'x.com')
     inserir_atividade(4, 'augusto@ufop', 'UFOP', 'AEDS 2', 10, 'x.com')
@@ -173,3 +175,5 @@ def povoar():
     
     inserir_lista(True, 3)
     inserir_lista(False, 4)
+
+def adiciona_pdf():
