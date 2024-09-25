@@ -12,11 +12,17 @@ conn = None
 cur = None
 
 try:
-        conn = psycopg2.connect(host=hostname, dbname=database, user=username, password=pwd, port=port_id)  # funcao que estabelece conexao com o bd
-        cur = conn.cursor()  # funcao para auxiliar nas operacoes sql
+    conn = psycopg2.connect(host=hostname, dbname=database, user=username, password=pwd, port=port_id)  # funcao que estabelece conexao com o bd
+    cur = conn.cursor()  # funcao para auxiliar nas operacoes sql
 
 except Exception as error:
-        print(error)
+    print(error)
+
+def termina_conexao():
+    if cur is not None:
+        cur.close()
+    if conn is not None:
+        conn.close()
 
 def verificar_email(email):
     regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
@@ -29,25 +35,6 @@ def inserir_academico(email, nome, tipo, instituicao):
     insert_values = (email, nome, tipo, instituicao)
     cur.execute(insert_scrip, insert_values)
     conn.commit()
-
-
-def povoar():
-    
-    inserir_academico('alexandre@ufop', 'Alexandre', 'Professor', 'UFOP')
-    inserir_academico('jao@ufop', 'jao', 'Aluno', 'UFOP')
-    inserir_academico('jorginho@ufop', 'jorge', 'Aluno', 'UFOP')
-    inserir_academico('augusto@ufop', 'augusto', 'Professor', 'UFOP')
-    
-    inserir_atividade(1, 'alexandre@ufop', 'UFOP', 'Banco de Dados 1', 5, 'x.com')
-    inserir_atividade(2, 'augusto@ufop', 'UFOP', 'Redes 1', 7, 'x.com')
-    inserir_atividade(3, 'alexandre@ufop', 'UFOP', 'Calculo 1', 1, 'x.com')
-    inserir_atividade(4, 'augusto@ufop', 'UFOP', 'AEDS 2', 10, 'x.com')
-    
-    inserir_prova(1, 1)
-    inserir_prova(1, 2)
-    
-    inserir_lista(True, 3)
-    inserir_lista(False, 4)
 
 def inserir_atividade(id, academico_email, instituicao, disciplina, num_quest, caminho_arquivo):
     insert_scrip = 'INSERT INTO atividade (atvid, academico_email, instituicao, disciplina, numquest, caminhoarquivo) VALUES (%s, %s, %s, %s, %s, %s);'
@@ -81,42 +68,18 @@ def inserir_pesquisa(id_atividade, email_academico):
     conn.commit()
 
 
-def pesquisa(disciplina, tipo):
-    if tipo == 'prova':
-        select_script = 'select disciplina, tipo, caminhoarquivo from atividade LEFT JOIN prova where disciplina=' + disciplina + ';'
-        cur.execute(select_script)
-        dados = cur.fetchall()
-        return dados
-    elif tipo == 'lista':
-        select_script = 'select disciplina, gabarito, caminhoarquivo from atividade LEFT JOIN lista where disciplina=' + disciplina + ';'
-        cur.execute(select_script)
-        dados = cur.fetchall()
-        return dados
-    else:
-        print("\nNao foi possivel realizar a pesquisa")
-
-
-def termina_conexao():
-    if cur is not None:
-        cur.close()
-    if conn is not None:
-        conn.close()
-
-
+#registros de email
 def sign_up():
-    # ler dados: email, nome, etc
-    # verificar email
     email = input("\nDigite seu email: ")
     nome = input("Digite seu nome: ")
     instituicao = input("Qual e sua instituicao?")
-    tipo = input("Voce e docente?")
+    tipo = input("Voce é aluno ou professor?")
     if not verificar_email(email):
         print("\nEmail invalido!")
         return 0
 
     try:
         inserir_academico(email, nome, tipo, instituicao)
-        conn.commit()
         return 1
     except Exception as error:
         print(error)
@@ -151,6 +114,22 @@ def login():
     return usuario
 
 
+#Pesquisas
+
+def pesquisa(disciplina, tipo):
+    if tipo == 'prova':
+        select_script = 'select disciplina, tipo, caminhoarquivo from atividade LEFT JOIN prova where disciplina=' + disciplina + ';'
+        cur.execute(select_script)
+        dados = cur.fetchall()
+        return dados
+    elif tipo == 'lista':
+        select_script = 'select disciplina, gabarito, caminhoarquivo from atividade LEFT JOIN lista where disciplina=' + disciplina + ';'
+        cur.execute(select_script)
+        dados = cur.fetchall()
+        return dados
+    else:
+        print("\nNao foi possivel realizar a pesquisa")
+
 def pesquisar_aluno_bd(nome, instituicao):
     print(f"select * from academico A where A.nome = '{nome}' and A.instituicao = '{instituicao}';")
     select_script = f"select * from academico A where A.nome = '{nome}' and A.instituicao = '{instituicao}';"
@@ -175,3 +154,22 @@ def pesquisar_atividade_conteudo(conteudo=str, instituicao=str, tipo=str):
     cur.execute(select_script)
     dados = cur.fetchall()
     return dados
+
+#Povoar
+def povoar():
+    
+    inserir_academico('alexandre@ufop', 'Alexandre', 'Professor', 'UFOP')
+    inserir_academico('jao@ufop', 'jao', 'Aluno', 'UFOP')
+    inserir_academico('jorginho@ufop', 'jorge', 'Aluno', 'UFOP')
+    inserir_academico('augusto@ufop', 'augusto', 'Professor', 'UFOP')
+    
+    inserir_atividade(1, 'alexandre@ufop', 'UFOP', 'Banco de Dados 1', 5, 'x.com')
+    inserir_atividade(2, 'augusto@ufop', 'UFOP', 'Redes 1', 7, 'x.com')
+    inserir_atividade(3, 'alexandre@ufop', 'UFOP', 'Calculo 1', 1, 'x.com')
+    inserir_atividade(4, 'augusto@ufop', 'UFOP', 'AEDS 2', 10, 'x.com')
+    
+    inserir_prova(1, 1)
+    inserir_prova(1, 2)
+    
+    inserir_lista(True, 3)
+    inserir_lista(False, 4)
