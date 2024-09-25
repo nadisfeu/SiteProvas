@@ -1,8 +1,4 @@
-script = "Select * from academico"
-# cur.execute(script)
-# print(cur.fetchall())
-
-
+import SiteProvas
 
 # login ou cadastro
 while (True):
@@ -38,4 +34,3 @@ while (True):
         print()
     else:
         print("\nOpcao invalida!!!")
-

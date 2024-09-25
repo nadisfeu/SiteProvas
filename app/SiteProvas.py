@@ -93,27 +93,6 @@ def sign_up():
         return 1
     except Exception as error:
         print(error)
-    # conn.commit()
-    # while True:
-    #     opcao = input("\nDeseja enviar ou pesquisar uma atividade? Digite sair para encerrar: ").lower()
-    #     print(opcao)
-    #     if opcao == 'sair':
-    #         break
-    #     elif opcao != 'enviar' or opcao != 'pesquisar':
-    #         print("\nOpcao invalida!")
-    #     else:
-    #         if opcao == 'pesquisar' or opcao == "pesquisa":
-    #             tipo = input("\nPesquisar por uma lista ou prova")
-    #             disciplina = input("\nQual disicplina?")
-    #             dados = pesquisa(disciplina, tipo)
-    #             for linha in dados:
-    #                 print(linha)
-    #             # inserir a pesquisa na tabela pesquisa do bd
-    #         elif opcao == 'enviar':
-    #             # input para receber e registrar atividade no bd
-    #             print("a")
-    #         else:
-    #             print("\nOpcao invalida!")
 
 
 def login():
