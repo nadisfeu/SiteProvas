@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS public.atividade
     academico_email "varchar",
     instituicao "varchar",
     disciplina "varchar",
-    "numQuest" integer,
-    "caminhoArquivo" "varchar",
+    "numquest" integer,
+    "caminhoarquivo" "varchar",
     PRIMARY KEY ("atvid")
 );
 
@@ -70,7 +70,13 @@ ALTER TABLE IF EXISTS public.lista
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
-
+	
+ALTER TABLE IF EXISTS public.prova
+    ADD FOREIGN KEY ("atvid")
+    REFERENCES public.atividade ("atvid") MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
 
 ALTER TABLE IF EXISTS public.pesquisa
     ADD CONSTRAINT pesquisada FOREIGN KEY ("atvid_atividade")
