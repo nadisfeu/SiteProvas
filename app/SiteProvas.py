@@ -20,7 +20,7 @@ def inserir_academico(cur, email, nome, tipo, instituicao):
     insert_scrip = 'INSERT INTO ACADEMICO (email, nome, tipo, instituicao) VALUES (%s, %s, %s, %s);'
     insert_values = (email, nome, tipo, instituicao)
     cur.execute(insert_scrip, insert_values)
-
+# a
 
 def povoar(cur):
     insert_script = 'DROP TABLE IF EXISTS academico CASCADE;'
