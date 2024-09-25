@@ -101,16 +101,16 @@ def pesquisar_aluno_bd(nome, instituicao):
     return dados
 
 
-def pesquisar_atividade_disciplina(disciplina=str, instituicao=str, tipo=str):
-    select_script = f"select * from atividade A, {tipo} T where (A.atvid = T.atvid and A.disciplina = '{disciplina}')" \
-                    f" and A.instuicao = '{instituicao}'" \
+def pesquisar_por_disciplina(disciplina=str, instituicao=str, tipo=str,  email=str):
+    select_script = f"select A.caminhoarquivo from atividade A, {tipo} T where (A.atvid = T.atvid and A.disciplina = '{disciplina}')" \
+                    f" and A.instituicao = '{instituicao}'" \
                     f" and EXISTS (select * from conteudo C where C.atvid = A.atvid);"
     cur.execute(select_script)
     dados = cur.fetchall()
     return dados
 
 
-def pesquisar_atividade_conteudo(conteudo=str, instituicao=str, tipo=str):
+def pesquisar_por_conteudo(conteudo=str, instituicao=str, tipo=str):
     select_script = f"select * from atividade A, {tipo} T where (A.atvid = T.atvid " \
                     f" and EXISTS (select * from conteudo C where C.materia = {conteudo});" \
                     f" and A.instuicao = '{instituicao}'"
@@ -175,8 +175,8 @@ def novo_login():
      else: 
         print('Login efetuado com sucesso')
         break
-    
     email_geral = email_informado
+    return email_geral
 
 def resetar_tabelas():
 
@@ -187,7 +187,10 @@ def resetar_tabelas():
     arquivo = arquivo.split(';')
 
     for comandos in arquivo: 
+        try:
             cur.execute(comandos)
+        except Exception as error:
+            print(error)
 
 def adicionar_prova_usuario(email):
     id = random.random()
