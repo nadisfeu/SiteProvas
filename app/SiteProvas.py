@@ -101,7 +101,7 @@ def pesquisar_aluno_bd(nome, instituicao):
     return dados
 
 
-def pesquisar_por_disciplina(disciplina=str, instituicao=str, tipo=str,  email=str):
+def pesquisar_por_disciplina(disciplina=str, instituicao=str, tipo=str):
     select_script = f"select A.caminhoarquivo from atividade A, {tipo} T where (A.atvid = T.atvid and A.disciplina = '{disciplina}')" \
                     f" and A.instituicao = '{instituicao}'" \
                     f" and EXISTS (select * from conteudo C where C.atvid = A.atvid);"
@@ -111,9 +111,7 @@ def pesquisar_por_disciplina(disciplina=str, instituicao=str, tipo=str,  email=s
 
 
 def pesquisar_por_conteudo(conteudo=str, instituicao=str, tipo=str):
-    select_script = f"select * from atividade A, {tipo} T where (A.atvid = T.atvid " \
-                    f" and EXISTS (select * from conteudo C where C.materia = {conteudo});" \
-                    f" and A.instuicao = '{instituicao}'"
+    select_script = f"select A.caminhoarquivo from atividade A join conteudo C on A.atvid = C.atvid, {tipo} T where A.atvid = T.atvid and C.materia = '{conteudo}' and A.instituicao = '{instituicao}'; "
     cur.execute(select_script)
     dados = cur.fetchall()
     return dados
