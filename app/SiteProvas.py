@@ -79,30 +79,35 @@ def inserir_prova(tipo, id):
 
 
 def inserir_pesquisa(id_atividade, email_academico):
-    insert_script = 'INSERT INTO pesquisa (atvid_atividade, email_academico) VALUES (%s, %s);'
-    insert_values = (id_atividade, email_academico)
-    cur.execute(insert_script, insert_values)
-    conn.commit()
-    
+    insert_script = f"select P.email_academico from pesquisa P where P.email_academico= '{email_academico}' AND P.atvid_atividade = {id_atividade}; "
+    cur.execute(insert_script)
+    dados = cur.fetchall()
+    if not dados:
+        insert_script = 'INSERT INTO pesquisa (atvid_atividade, email_academico) VALUES (%s, %s);'
+        insert_values = (id_atividade, email_academico)
+        cur.execute(insert_script, insert_values)
+        conn.commit()
+        
     # Pesquisas
 
-
-def pesquisar_aluno_bd(nome, instituicao):
-    print(f"select * from academico A where A.nome = '{nome}' and A.instituicao = '{instituicao}';")
-    select_script = f"select * from academico A where A.nome = '{nome}' and A.instituicao = '{instituicao}';"
+def pesquisar_por_disciplina(disciplina=str, instituicao=str, tipo=str, email = str):
+    
+    select_script = f"select A.atvid from atividade A join conteudo C on A.atvid = C.atvid, {tipo} T where (A.atvid = T.atvid and A.disciplina = '{disciplina}') and A.instituicao = '{instituicao}' GROUP BY A.atvid; "
     cur.execute(select_script)
-    dados = cur.fetchall()
-    return dados
-
-
-def pesquisar_por_disciplina(disciplina=str, instituicao=str, tipo=str):
+    id = cur.fetchall()[0][0]
+    inserir_pesquisa(id,email)
     select_script = f"select A.caminhoarquivo, STRING_AGG(c.materia, ' , ') as conteudos from atividade A join conteudo C on A.atvid = C.atvid, {tipo} T where (A.atvid = T.atvid and A.disciplina = '{disciplina}') and A.instituicao = '{instituicao}' GROUP BY A.atvid; "
     cur.execute(select_script)
     dados = cur.fetchall()
     return dados
 
 
-def pesquisar_por_conteudo(conteudo=str, instituicao=str, tipo=str):
+def pesquisar_por_conteudo(conteudo=str, instituicao=str, tipo=str,email = str):
+    
+    select_script = f"select A.atvid from atividade A join conteudo C on A.atvid = C.atvid, {tipo} T where A.atvid = T.atvid and C.materia = '{conteudo}' and A.instituicao = '{instituicao}'; "
+    cur.execute(select_script)
+    id = cur.fetchall()[0][0]
+    inserir_pesquisa(id,email)
     select_script = f"select A.caminhoarquivo, A.disciplina from atividade A join conteudo C on A.atvid = C.atvid, {tipo} T where A.atvid = T.atvid and C.materia = '{conteudo}' and A.instituicao = '{instituicao}'; "
     cur.execute(select_script)
     dados = cur.fetchall()
@@ -186,21 +191,45 @@ def resetar_tabelas():
             print(error)
 
 def adicionar_prova_usuario(email):
-    id = random.random(0,1000)
-    select_script = f"SELECT * FROM atividade F WHERE F.atvid = {id};"
-    while cur.execute(select_script):  # verifica se existe alguma atividade com o id
-        id = random.random(0,1000)
+    
+    select_script = f"SELECT MAX(F.atvid) FROM atividade F"
+    cur.execute(select_script)
+    id = cur.fetchall()[0][0] + 1
 
     select_script = f"select A.instituicao from academico A where A.email = '{email}'"
     cur.execute(select_script)
     instituicao = cur.fetchall()[0][0]
     disciplina = input("Digite a disciplina da prova: ")
     num_quest = int(input("Digite o numero de questoes: "))
-    caminho = input("Cole o link do drive (o link deverá está público):")
-    tipo = int(input("Qual o tipo da prova? (1,2,3...)"))
-    conteudotemp = input("Digite os conteudos (Ex: algebra linear, integracao,... ")
+    caminho = input("Cole o link do drive (o link deverá está público): ")
+    tipo = int(input("Qual o tipo da prova? (1,2,3...): "))
+    conteudotemp = input("Digite os conteudos (Ex: algebra linear, integracao,...): ")
     conteudo = conteudotemp.split(',')
 
     inserir_link_provas_drive(id=id, email=email, instituicao=instituicao,
                               disciplina=disciplina, num_quest=num_quest, caminho=caminho,
                               tipo=tipo, conteudo=conteudo)
+
+def adicionar_lista_usuario(email):
+    
+    select_script = f"SELECT MAX(F.atvid) FROM atividade F"
+    cur.execute(select_script)
+    id = cur.fetchall()[0][0] + 1
+
+    select_script = f"select A.instituicao from academico A where A.email = '{email}'"
+    cur.execute(select_script)
+    instituicao = cur.fetchall()[0][0]
+    disciplina = input("Digite a disciplina da lista: ")
+    num_quest = int(input("Digite o numero de questoes: "))
+    caminho = input("Cole o link do drive (o link deverá está público): ")
+    gabarito = input("Possui gabarito? sim ou não: ")
+    if gabarito == 'sim':
+        gabarito = True
+    else:
+        gabarito = False
+    conteudotemp = input("Digite os conteudos (Ex: algebra linear, integracao,...): ")
+    conteudo = conteudotemp.split(',')
+
+    inserir_link_listas_drive(id=id, email=email, instituicao=instituicao,
+                              disciplina=disciplina, num_quest=num_quest, caminho=caminho,
+                              gabarito=gabarito, conteudo=conteudo)
