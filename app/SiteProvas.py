@@ -94,7 +94,11 @@ def pesquisar_por_disciplina(disciplina=str, instituicao=str, tipo=str, email = 
     
     select_script = f"select A.atvid from atividade A join conteudo C on A.atvid = C.atvid, {tipo} T where (A.atvid = T.atvid and A.disciplina = '{disciplina}') and A.instituicao = '{instituicao}' GROUP BY A.atvid; "
     cur.execute(select_script)
-    id = cur.fetchall()[0][0]
+    id = cur.fetchall()
+    if not id:
+        dados = [('Nao encontrado',' ')]
+        return dados
+    id = id[0][0]
     inserir_pesquisa(id,email)
     select_script = f"select A.caminhoarquivo, STRING_AGG(c.materia, ' , ') as conteudos from atividade A join conteudo C on A.atvid = C.atvid, {tipo} T where (A.atvid = T.atvid and A.disciplina = '{disciplina}') and A.instituicao = '{instituicao}' GROUP BY A.atvid; "
     cur.execute(select_script)
@@ -106,6 +110,10 @@ def pesquisar_por_conteudo(conteudo=str, instituicao=str, tipo=str,email = str):
     
     select_script = f"select A.atvid from atividade A join conteudo C on A.atvid = C.atvid, {tipo} T where A.atvid = T.atvid and C.materia = '{conteudo}' and A.instituicao = '{instituicao}'; "
     cur.execute(select_script)
+    id = cur.fetchall()
+    if not id:
+        dados = [('Nao encontrado',' ')]
+        return dados
     id = cur.fetchall()[0][0]
     inserir_pesquisa(id,email)
     select_script = f"select A.caminhoarquivo, A.disciplina from atividade A join conteudo C on A.atvid = C.atvid, {tipo} T where A.atvid = T.atvid and C.materia = '{conteudo}' and A.instituicao = '{instituicao}'; "
