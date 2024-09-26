@@ -21,6 +21,14 @@ except Exception as error:
     print(error)
 
 
+def imprime_saida_disciplina(dados):
+    for i in dados:
+        print(f"Link: {i[0]}  \t Conteudo: {i[1]}")
+
+def imprime_saida_conteudo(dados):
+    for i in dados:
+        print(f"Link: {i[0]}  \t Disciplina: {i[1]}")
+
 def termina_conexao():
     if cur is not None:
         cur.close()
@@ -88,14 +96,14 @@ def pesquisar_aluno_bd(nome, instituicao):
 
 
 def pesquisar_por_disciplina(disciplina=str, instituicao=str, tipo=str):
-    select_script = f"select A.caminhoarquivo, STRING_AGG(c.materia, ' , ') as conteudos from atividade A, conteudo C, {tipo} T where (A.atvid = T.atvid and A.disciplina = '{disciplina}') and A.instituicao = '{instituicao}' GROUP BY A.atvid; "
+    select_script = f"select A.caminhoarquivo, STRING_AGG(c.materia, ' , ') as conteudos from atividade A join conteudo C on A.atvid = C.atvid, {tipo} T where (A.atvid = T.atvid and A.disciplina = '{disciplina}') and A.instituicao = '{instituicao}' GROUP BY A.atvid; "
     cur.execute(select_script)
     dados = cur.fetchall()
     return dados
 
 
 def pesquisar_por_conteudo(conteudo=str, instituicao=str, tipo=str):
-    select_script = f"select A.caminhoarquivo from atividade A join conteudo C on A.atvid = C.atvid, {tipo} T where A.atvid = T.atvid and C.materia = '{conteudo}' and A.instituicao = '{instituicao}'; "
+    select_script = f"select A.caminhoarquivo, A.disciplina from atividade A join conteudo C on A.atvid = C.atvid, {tipo} T where A.atvid = T.atvid and C.materia = '{conteudo}' and A.instituicao = '{instituicao}'; "
     cur.execute(select_script)
     dados = cur.fetchall()
     return dados
@@ -110,7 +118,7 @@ def povoar():
                               1, ['vetor', 'mecanica', 'aceleracao', 'deslocamento'])
     inserir_link_provas_drive(2, 'jao@ufop', 'ufop', 'fisica', 5,
                               'https://drive.google.com/file/d/1U4IFIr-Bs5DcG6w06NYh7m-7s7vN_HOU/view?usp=sharing',
-                              1, ['asd', 'sadas', 'sdad', 'sadsa'])
+                              1, ['asd', 'vetor', 'sdad', 'sadsa'])
 
 
 def inserir_link_provas_drive(id, email, instituicao, disciplina, num_quest, caminho, tipo, conteudo=list):
@@ -178,10 +186,10 @@ def resetar_tabelas():
             print(error)
 
 def adicionar_prova_usuario(email):
-    id = random.random()
+    id = random.random(0,1000)
     select_script = f"SELECT * FROM atividade F WHERE F.atvid = {id};"
     while cur.execute(select_script):  # verifica se existe alguma atividade com o id
-        id = random.random()
+        id = random.random(0,1000)
 
     select_script = f"select A.instituicao from academico A where A.email = '{email}'"
     cur.execute(select_script)
@@ -193,6 +201,6 @@ def adicionar_prova_usuario(email):
     conteudotemp = input("Digite os conteudos (Ex: algebra linear, integracao,... ")
     conteudo = conteudotemp.split(',')
 
-    inserir_link_provas_drive(id=id, academico_email=email, instituicao=instituicao,
-                              disciplina=disciplina, num_quest=num_quest, caminho_arquivo=caminho,
+    inserir_link_provas_drive(id=id, email=email, instituicao=instituicao,
+                              disciplina=disciplina, num_quest=num_quest, caminho=caminho,
                               tipo=tipo, conteudo=conteudo)
