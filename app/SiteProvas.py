@@ -78,20 +78,6 @@ def inserir_pesquisa(id_atividade, email_academico):
     
     # Pesquisas
 
-def pesquisa(disciplina, tipo):
-    if tipo == 'prova':
-        select_script = 'select disciplina, tipo, caminhoarquivo from atividade LEFT JOIN prova where disciplina=' + disciplina + ';'
-        cur.execute(select_script)
-        dados = cur.fetchall()
-        return dados
-    elif tipo == 'lista':
-        select_script = 'select disciplina, gabarito, caminhoarquivo from atividade LEFT JOIN lista where disciplina=' + disciplina + ';'
-        cur.execute(select_script)
-        dados = cur.fetchall()
-        return dados
-    else:
-        print("\nNao foi possivel realizar a pesquisa")
-
 
 def pesquisar_aluno_bd(nome, instituicao):
     print(f"select * from academico A where A.nome = '{nome}' and A.instituicao = '{instituicao}';")
@@ -102,9 +88,7 @@ def pesquisar_aluno_bd(nome, instituicao):
 
 
 def pesquisar_por_disciplina(disciplina=str, instituicao=str, tipo=str):
-    select_script = f"select A.caminhoarquivo from atividade A, {tipo} T where (A.atvid = T.atvid and A.disciplina = '{disciplina}')" \
-                    f" and A.instituicao = '{instituicao}'" \
-                    f" and EXISTS (select * from conteudo C where C.atvid = A.atvid);"
+    select_script = f"select A.caminhoarquivo, STRING_AGG(c.materia, ' , ') as conteudos from atividade A, conteudo C, {tipo} T where (A.atvid = T.atvid and A.disciplina = '{disciplina}') and A.instituicao = '{instituicao}' GROUP BY A.atvid; "
     cur.execute(select_script)
     dados = cur.fetchall()
     return dados
@@ -124,6 +108,9 @@ def povoar():
     inserir_link_provas_drive(1, 'jao@ufop', 'ufop', 'fisica', 4,
                               'https://drive.google.com/file/d/1U4IFIr-Bs5DcG6w06NYh7m-7s7vN_HOU/view?usp=sharing',
                               1, ['vetor', 'mecanica', 'aceleracao', 'deslocamento'])
+    inserir_link_provas_drive(2, 'jao@ufop', 'ufop', 'fisica', 5,
+                              'https://drive.google.com/file/d/1U4IFIr-Bs5DcG6w06NYh7m-7s7vN_HOU/view?usp=sharing',
+                              1, ['asd', 'sadas', 'sdad', 'sadsa'])
 
 
 def inserir_link_provas_drive(id, email, instituicao, disciplina, num_quest, caminho, tipo, conteudo=list):
