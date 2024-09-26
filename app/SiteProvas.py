@@ -178,7 +178,7 @@ def novo_login():
 
 def resetar_tabelas():
 
-    fd = open(r"C:\Users\PP\Documents\BD\SiteProvas\sql\CriacaoTabela100PorcentoAtualizado.sql",'r')
+    fd = open(r"C:\Users\PP\Documents\BD\SiteProvas\sql\CriacaoTabela.sql",'r')
     arquivo = fd.read()
     fd.close()
 
