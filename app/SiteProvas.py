@@ -124,14 +124,20 @@ def pesquisar_por_conteudo(conteudo=str, instituicao=str, tipo=str,email = str):
 
 # Povoar
 def povoar():
-    inserir_academico('jao@ufop', 'jao', 'Aluno', 'UFOP')
+    
+    inserir_academico('jao@ufop.com', 'Jao', 'Aluno', 'UFOP')
+    inserir_academico('bruno@ufop.com', 'Bruno ', 'Professor', 'UFOP')
+    inserir_academico('flavio@ufop.com', 'Flavio', 'Aluno', 'UFOP')
 
-    inserir_link_provas_drive(1, 'jao@ufop', 'ufop', 'fisica', 4,
+    inserir_link_provas_drive(1, 'jao@ufop.com', 'UFOP', 'Fisica 1', 4,
                               'https://drive.google.com/file/d/1U4IFIr-Bs5DcG6w06NYh7m-7s7vN_HOU/view?usp=sharing',
-                              1, ['vetor', 'mecanica', 'aceleracao', 'deslocamento'])
-    inserir_link_provas_drive(2, 'jao@ufop', 'ufop', 'fisica', 5,
-                              'https://drive.google.com/file/d/1U4IFIr-Bs5DcG6w06NYh7m-7s7vN_HOU/view?usp=sharing',
-                              1, ['asd', 'vetor', 'sdad', 'sadsa'])
+                              1, ['Vetor', 'Mecanica', 'Aceleracao', 'Deslocamento'])
+    inserir_link_provas_drive(2, 'flavio@ufop.com', 'UFOP', 'Sistemas Operacionais', 6,
+                              'https://drive.google.com/file/d/1TM-4zJmo4MAhFmadYQgTIeYbXv7n4cc2/view?usp=sharing',
+                              1, ['Introducao aos sistemas operacionais', 'Estrutura de sistemas operacionais', 'Processos'])
+    inserir_link_listas_drive(3,'flavio@ufop.com','UFOP','Redes 1',7,'https://drive.google.com/drive/u/0/folders/17oKPL-x4GQZICgKx-zZoU-Qzy7IDDXaf', False,['Camada Fisica'])
+
+    inserir_pesquisa(1,'jao@ufop.com')
 
 
 def inserir_link_provas_drive(id, email, instituicao, disciplina, num_quest, caminho, tipo, conteudo=list):
