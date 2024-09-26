@@ -5,6 +5,9 @@ connect = SiteProvas.conn
 cursor = SiteProvas.cur
 opcao = None
 
+#SiteProvas.resetar_tabelas()
+#SiteProvas.povoar()
+
 os.system("cls")
 
 email = SiteProvas.novo_login()
