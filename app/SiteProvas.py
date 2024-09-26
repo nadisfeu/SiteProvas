@@ -18,7 +18,7 @@ try:
     cur = conn.cursor()  # funcao para auxiliar nas operacoes sql
 
 except Exception as error:
-    print(error)
+    print(' ')
 
 
 def imprime_saida_disciplina(dados):
@@ -114,7 +114,7 @@ def pesquisar_por_conteudo(conteudo=str, instituicao=str, tipo=str,email = str):
     if not id:
         dados = [('Nao encontrado',' ')]
         return dados
-    id = cur.fetchall()[0][0]
+    id = id[0][0]
     inserir_pesquisa(id,email)
     select_script = f"select A.caminhoarquivo, A.disciplina from atividade A join conteudo C on A.atvid = C.atvid, {tipo} T where A.atvid = T.atvid and C.materia = '{conteudo}' and A.instituicao = '{instituicao}'; "
     cur.execute(select_script)
@@ -135,7 +135,7 @@ def povoar():
     inserir_link_provas_drive(2, 'flavio@ufop.com', 'UFOP', 'Sistemas Operacionais', 6,
                               'https://drive.google.com/file/d/1TM-4zJmo4MAhFmadYQgTIeYbXv7n4cc2/view?usp=sharing',
                               1, ['Introducao aos sistemas operacionais', 'Estrutura de sistemas operacionais', 'Processos'])
-    inserir_link_listas_drive(3,'flavio@ufop.com','UFOP','Redes 1',7,'https://drive.google.com/drive/u/0/folders/17oKPL-x4GQZICgKx-zZoU-Qzy7IDDXaf', False,['Camada Fisica'])
+    inserir_link_listas_drive(3,'flavio@ufop.com','UFOP','Redes 1',7,'https://drive.google.com/file/d/1KaYnMcCrW7lskD3qICMQOkBG2aWGL4SS/view?usp=sharing', False,['Camada Fisica'])
 
     inserir_pesquisa(1,'jao@ufop.com')
 
@@ -177,7 +177,7 @@ def novo_login():
                 inserir_academico(email_informado, nome, tipo, instituicao)
                 resposta = 1
             except Exception as error:
-                print(error)
+                print(' ')
         if resposta == 1:
             print("Cadastro efetuado com sucesso!")
             break
@@ -202,7 +202,7 @@ def resetar_tabelas():
         try:
             cur.execute(comandos)
         except Exception as error:
-            print(error)
+            print(' ')
 
 def adicionar_prova_usuario(email):
     

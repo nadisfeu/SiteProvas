@@ -6,8 +6,6 @@ cursor = SiteProvas.cur
 opcao = None
 
 os.system("cls")
-SiteProvas.resetar_tabelas()
-SiteProvas.povoar()
 
 email = SiteProvas.novo_login()
 while(True):
